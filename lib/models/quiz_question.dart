@@ -10,24 +10,30 @@ class QuizQuestion {
     required this.question,
     required this.options,
     required this.scores,
-  }) : assert(options.length == scores.length),
-        assert(options.length >= 2),
-        assert(scores.every((score) => score >= 0));
+  });
 
   int get optionCount => options.length;
 
-  int get maxScore =>
-      scores.isEmpty ? 0 : scores.reduce((a, b) => a > b ? a : b);
+  int get maxScore {
+    if (scores.isEmpty) return 0;
 
-  int get minScore =>
-      scores.isEmpty ? 0 : scores.reduce((a, b) => a < b ? a : b);
+    return scores.reduce((a, b) => a > b ? a : b);
+  }
 
-  bool get isValid => id.trim().isNotEmpty &&
-      question.trim().isNotEmpty &&
-      options.length >= 2 &&
-      options.length == scores.length &&
-      options.every((option) => option.trim().isNotEmpty) &&
-      scores.every((score) => score >= 0);
+  int get minScore {
+    if (scores.isEmpty) return 0;
+
+    return scores.reduce((a, b) => a < b ? a : b);
+  }
+
+  bool get isValid {
+    return id.trim().isNotEmpty &&
+        question.trim().isNotEmpty &&
+        options.length >= 2 &&
+        options.length == scores.length &&
+        options.every((option) => option.trim().isNotEmpty) &&
+        scores.every((score) => score >= 0);
+  }
 
   int? calculateScore(int selectedIndex) {
     if (selectedIndex < 0 || selectedIndex >= scores.length) {
