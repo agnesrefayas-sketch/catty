@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'result_screen.dart';
 import '../providers/quiz_provider.dart';
 
 class QuizScreen extends StatelessWidget {
@@ -242,8 +242,24 @@ class QuizScreen extends StatelessWidget {
                         flex: 2,
                         child: ElevatedButton(
                           onPressed: quiz.hasAnsweredCurrentQuestion
-                              ? quiz.nextQuestion
+                              ? () {
+                            if (quiz.currentQuestionIndex ==
+                                quiz.totalQuestions - 1) {
+                              quiz.nextQuestion();
+
+                              if (quiz.result != null) {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) => const ResultScreen(),
+                                  ),
+                                );
+                              }
+                            } else {
+                              quiz.nextQuestion();
+                            }
+                          }
                               : null,
+
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(0, 54),
                             backgroundColor: primaryColor,
