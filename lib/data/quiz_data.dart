@@ -1,4 +1,3 @@
-
 import '../models/quiz_question.dart';
 
 class QuizData {

@@ -1,4 +1,3 @@
-
 enum CatMood {
   thriving,
   doingOkay,
