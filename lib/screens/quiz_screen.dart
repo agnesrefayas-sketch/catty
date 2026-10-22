@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'result_screen.dart';
+
 import '../providers/quiz_provider.dart';
+import '../widgets/answer_option_card.dart';
+import 'result_screen.dart';
 
 class QuizScreen extends StatelessWidget {
   const QuizScreen({super.key});
@@ -28,6 +30,7 @@ class QuizScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Header
                   Row(
                     children: [
                       IconButton(
@@ -55,8 +58,10 @@ class QuizScreen extends StatelessWidget {
                       ),
                     ],
                   ),
+
                   const SizedBox(height: 24),
 
+                  // Question number
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -78,21 +83,26 @@ class QuizScreen extends StatelessWidget {
                       ),
                     ],
                   ),
+
                   const SizedBox(height: 12),
 
+                  // Progress indicator
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: LinearProgressIndicator(
                       value: quiz.progress,
                       minHeight: 8,
                       backgroundColor: const Color(0xFFF3E4E8),
-                      valueColor: const AlwaysStoppedAnimation<Color>(
+                      valueColor:
+                      const AlwaysStoppedAnimation<Color>(
                         primaryColor,
                       ),
                     ),
                   ),
+
                   const SizedBox(height: 36),
 
+                  // Question card
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(24),
@@ -127,6 +137,7 @@ class QuizScreen extends StatelessWidget {
                       ],
                     ),
                   ),
+
                   const SizedBox(height: 28),
 
                   const Text(
@@ -136,8 +147,10 @@ class QuizScreen extends StatelessWidget {
                       color: mutedColor,
                     ),
                   ),
+
                   const SizedBox(height: 14),
 
+                  // Reusable answer option cards
                   Expanded(
                     child: ListView.separated(
                       itemCount: question.options.length,
@@ -147,76 +160,19 @@ class QuizScreen extends StatelessWidget {
                         final isSelected =
                             quiz.selectedAnswerIndex == index;
 
-                        return Material(
-                          color: isSelected
-                              ? const Color(0xFFFFE4EA)
-                              : Colors.white,
-                          borderRadius: BorderRadius.circular(18),
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(18),
-                            onTap: () => quiz.selectAnswer(index),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 17,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(18),
-                                border: Border.all(
-                                  color: isSelected
-                                      ? primaryColor
-                                      : const Color(0xFFF0E5E8),
-                                  width: isSelected ? 2 : 1,
-                                ),
-                              ),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: 28,
-                                    height: 28,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: isSelected
-                                          ? primaryColor
-                                          : const Color(0xFFFFF1F4),
-                                    ),
-                                    child: Text(
-                                      String.fromCharCode(65 + index),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: isSelected
-                                            ? Colors.white
-                                            : mutedColor,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 14),
-                                  Expanded(
-                                    child: Text(
-                                      question.options[index],
-                                      style: const TextStyle(
-                                        fontSize: 15,
-                                        height: 1.4,
-                                        color: textColor,
-                                      ),
-                                    ),
-                                  ),
-                                  if (isSelected)
-                                    const Icon(
-                                      Icons.check_circle_rounded,
-                                      color: primaryColor,
-                                    ),
-                                ],
-                              ),
-                            ),
-                          ),
+                        return AnswerOptionCard(
+                          text: question.options[index],
+                          label: String.fromCharCode(65 + index),
+                          isSelected: isSelected,
+                          onTap: () => quiz.selectAnswer(index),
                         );
                       },
                     ),
                   ),
 
                   const SizedBox(height: 16),
+
+                  // Navigation buttons
                   Row(
                     children: [
                       Expanded(
@@ -237,7 +193,9 @@ class QuizScreen extends StatelessWidget {
                           child: const Text('Back'),
                         ),
                       ),
+
                       const SizedBox(width: 14),
+
                       Expanded(
                         flex: 2,
                         child: ElevatedButton(
@@ -250,7 +208,8 @@ class QuizScreen extends StatelessWidget {
                               if (quiz.result != null) {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (_) => const ResultScreen(),
+                                    builder: (_) =>
+                                    const ResultScreen(),
                                   ),
                                 );
                               }
@@ -259,7 +218,6 @@ class QuizScreen extends StatelessWidget {
                             }
                           }
                               : null,
-
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(0, 54),
                             backgroundColor: primaryColor,
