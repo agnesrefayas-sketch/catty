@@ -84,7 +84,7 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(height: 14),
 
                 const Text(
-                  'A little moment to check in with yourself.',
+                  'Discover your inner cat.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 16,
@@ -96,8 +96,7 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(height: 12),
 
                 const Text(
-                  'Take a breath, listen to how you feel, '
-                      'and discover what your inner cat needs today.',
+                  'Are you a sleepy little loaf, a chaotic zoomie machine, or a perfectly balanced cat?',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 14,
@@ -127,8 +126,7 @@ class HomeScreen extends StatelessWidget {
                       SizedBox(width: 12),
                       Expanded(
                         child: Text(
-                          'No pressure, no judgment. '
-                              'Just you and a little self-reflection.',
+                          'Take the quiz to discover your cat personality and see how healthy your inner cat really is.',
                           style: TextStyle(
                             color: textColor,
                             fontSize: 13,
@@ -165,7 +163,7 @@ class HomeScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Start Your Check-in',
+                          'Find Your Inner Cat',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -181,7 +179,7 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(height: 18),
 
                 const Text(
-                  'A small check-in can be a good beginning.',
+                  'Every cat has its own kind of purrfection.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: mutedColor,

@@ -117,7 +117,7 @@ class QuizScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          'A little check-in with yourself',
+                          'Lets get this meow-ving!',
                           style: TextStyle(
                             color: primaryColor,
                             fontSize: 13,
@@ -141,7 +141,7 @@ class QuizScreen extends StatelessWidget {
                   const SizedBox(height: 28),
 
                   const Text(
-                    'Choose what feels closest to you',
+                    'Trust your whiskers. Choose wisely.',
                     style: TextStyle(
                       fontSize: 14,
                       color: mutedColor,
