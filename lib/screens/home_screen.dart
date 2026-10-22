@@ -51,17 +51,20 @@ class HomeScreen extends StatelessWidget {
                   width: 190,
                   height: 190,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFFE8ED),
+                    color: const Color(0xFFD96C8B),
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: const Color(0xFFF9D5DE),
+                      color: const Color(0xFFD96C8B),
                       width: 2,
                     ),
                   ),
-                  child: const Icon(
-                    Icons.cruelty_free_rounded,
-                    size: 112,
-                    color: primaryColor,
+                  child: ClipOval(
+                    child: Image.asset(
+                      'assets/images/rigby.jpg',
+                      width: 140,
+                      height: 140,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
 
