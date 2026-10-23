@@ -206,10 +206,20 @@ class QuizScreen extends StatelessWidget {
                               quiz.nextQuestion();
 
                               if (quiz.result != null) {
+                                final result = quiz.result!;
+
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (_) =>
-                                    const ResultScreen(),
+                                    builder: (_) => ResultScreen(
+                                      catEnergy: result.percentage.round(),
+                                      catWellness: result.percentage.round(),
+                                      catPersonality: result.title,
+                                      catDescription: result.description,
+                                      onRetake: () {
+                                        quiz.resetQuiz();
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
                                   ),
                                 );
                               }

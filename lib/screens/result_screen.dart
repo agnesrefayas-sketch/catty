@@ -1,247 +1,303 @@
+
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../providers/quiz_provider.dart';
 
 class ResultScreen extends StatelessWidget {
-  const ResultScreen({super.key});
+  final int catEnergy;
+  final int catWellness;
+  final String catPersonality;
+  final String catDescription;
+  final VoidCallback onRetake;
+
+  const ResultScreen({
+    super.key,
+    required this.catEnergy,
+    required this.catWellness,
+    required this.catPersonality,
+    required this.catDescription,
+    required this.onRetake,
+  });
 
   static const Color backgroundColor = Color(0xFFFFF8F5);
-  static const Color primaryColor = Color(0xFFFF8FA3);
+  static const Color primaryColor = Color(0xFFE987A5);
   static const Color textColor = Color(0xFF493D46);
-  static const Color sageColor = Color(0xFFA8C3A0);
+  static const Color mutedColor = Color(0xFF9B8E98);
+  static const Color sageGreen = Color(0xFFA8BFA3);
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<QuizProvider>(
-      builder: (context, quiz, child) {
-        final result = quiz.result;
+    final energy = catEnergy.clamp(0, 100);
+    final wellness = catWellness.clamp(0, 100);
 
-        if (result == null) {
-          return Scaffold(
-            backgroundColor: backgroundColor,
-            body: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text('Your little check-in is not finished yet.'),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () => Navigator.of(context).maybePop(),
-                    child: const Text('Back to quiz'),
-                  ),
-                ],
+    return Scaffold(
+      backgroundColor: backgroundColor,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            children: [
+              const SizedBox(height: 16),
+
+              const Text(
+                'THE CAT COUNCIL HAS DECIDED',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: primaryColor,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.4,
+                ),
               ),
-            ),
-          );
-        }
 
-        return Scaffold(
-          backgroundColor: backgroundColor,
-          body: SafeArea(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 12),
-                  const Text(
-                    'catty',
-                    style: TextStyle(
-                      color: primaryColor,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1.5,
-                    ),
+              const SizedBox(height: 24),
+
+              Container(
+                width: 160,
+                height: 160,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFE8ED),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: const Color(0xFFF9D5DE),
+                    width: 3,
                   ),
-                  const SizedBox(height: 32),
-
-                  Container(
-                    width: 112,
-                    height: 112,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFFE4EA),
-                      borderRadius: BorderRadius.circular(36),
-                    ),
-                    child: const Icon(
-                      Icons.pets_rounded,
-                      color: primaryColor,
-                      size: 62,
-                    ),
+                ),
+                child: const Center(
+                  child: Icon(
+                    Icons.pets_rounded,
+                    color: primaryColor,
+                    size: 78,
                   ),
-                  const SizedBox(height: 24),
+                ),
+              ),
 
-                  const Text(
-                    'YOUR LITTLE CHECK-IN',
-                    style: TextStyle(
-                      color: primaryColor,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 2,
-                      fontSize: 12,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
+              const SizedBox(height: 24),
 
-                  Text(
-                    result.title,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: textColor,
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      height: 1.25,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
+              Text(
+                catPersonality,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: textColor,
+                  fontSize: 27,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
 
-                  Text(
-                    result.description,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Color(0xFF7F727C),
-                      fontSize: 16,
-                      height: 1.7,
-                    ),
-                  ),
-                  const SizedBox(height: 28),
+              const SizedBox(height: 8),
 
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(22),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(24),
-                      border: Border.all(
-                        color: const Color(0xFFF3E4E8),
-                      ),
-                    ),
-                    child: Column(
-                      children: [
-                        const Text(
-                          'Your reflection score',
-                          style: TextStyle(
-                            color: Color(0xFF8D8089),
-                            fontSize: 14,
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        Text(
-                          '${result.totalScore}',
-                          style: const TextStyle(
-                            color: primaryColor,
-                            fontSize: 38,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          'out of ${result.maxPossibleScore}',
-                          style: const TextStyle(
-                            color: Color(0xFF8D8089),
-                            fontSize: 13,
-                          ),
-                        ),
-                        const SizedBox(height: 18),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: LinearProgressIndicator(
-                            value: result.percentage.clamp(0.0, 1.0),
-                            minHeight: 9,
-                            backgroundColor: const Color(0xFFF3E4E8),
-                            valueColor:
-                            const AlwaysStoppedAnimation<Color>(
-                              sageColor,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 24),
+              const Text(
+                'No thoughts. Just meow.',
+                style: TextStyle(
+                  color: mutedColor,
+                  fontSize: 15,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
 
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFEAF1E6),
-                      borderRadius: BorderRadius.circular(22),
-                    ),
-                    child: const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'A gentle reminder',
-                          style: TextStyle(
-                            color: Color(0xFF52694D),
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          'This check-in is a moment for self-reflection, '
-                              'not a diagnosis. Your feelings can change, and '
-                              'you deserve kindness at every stage.',
-                          style: TextStyle(
-                            color: Color(0xFF52694D),
-                            fontSize: 14,
-                            height: 1.6,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 28),
+              const SizedBox(height: 32),
 
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        quiz.resetQuiz();
-                        Navigator.of(context).popUntil(
-                              (route) => route.isFirst,
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: primaryColor,
-                        foregroundColor: Colors.white,
-                        minimumSize: const Size(double.infinity, 56),
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18),
-                        ),
-                      ),
-                      child: const Text(
-                        'Take the quiz again',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 14),
+              _ScoreCard(
+                title: 'Cat Energy',
+                score: energy,
+                color: primaryColor,
+                background: const Color(0xFFF5DDE3),
+                description: _energyDescription(energy),
+              ),
 
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).popUntil(
-                            (route) => route.isFirst,
-                      );
-                    },
-                    child: const Text(
-                      'Back to home',
+              const SizedBox(height: 16),
+
+              _ScoreCard(
+                title: 'Cat Wellness',
+                score: wellness,
+                color: sageGreen,
+                background: const Color(0xFFE4EBDD),
+                description: _wellnessDescription(wellness),
+              ),
+
+              const SizedBox(height: 24),
+
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFEAF0E6),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Your cat report',
                       style: TextStyle(
                         color: textColor,
-                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 12),
-                ],
+                    const SizedBox(height: 10),
+                    Text(
+                      catDescription,
+                      style: const TextStyle(
+                        color: textColor,
+                        fontSize: 14,
+                        height: 1.6,
+                      ),
+                    ),
+                  ],
+                ),
               ),
+
+              const SizedBox(height: 12),
+
+              const Text(
+                'For fun and self-reflection only, not a medical assessment.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: mutedColor,
+                  fontSize: 11,
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              SizedBox(
+                width: double.infinity,
+                height: 54,
+                child: ElevatedButton.icon(
+                  onPressed: onRetake,
+                  icon: const Icon(Icons.refresh_rounded),
+                  label: const Text(
+                    'MEOW AGAIN',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: primaryColor,
+                    foregroundColor: Colors.white,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 16),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  static String _energyDescription(int score) {
+    if (score >= 85) {
+      return 'Your inner cat has escaped containment. '
+          'The brain cell is on vacation. Maximum meow energy.';
+    }
+    if (score >= 65) {
+      return 'Certified cat behavior detected. '
+          'You probably stare at walls for absolutely no reason.';
+    }
+    if (score >= 40) {
+      return 'Part-time cat, full-time mystery. '
+          'Your whiskers are still loading.';
+    }
+    return 'A human disguise with suspiciously cat-like tendencies. '
+        'The cat council is keeping an eye on you.';
+  }
+
+  static String _wellnessDescription(int score) {
+    if (score >= 85) {
+      return 'Hydrated, rested, and thriving. '
+          'The neighborhood cats are asking for your secrets.';
+    }
+    if (score >= 65) {
+      return 'Not bad, little furball. '
+          'A few habits could use some paw-sitive changes.';
+    }
+    if (score >= 40) {
+      return 'The cat wellness department has opened a case. '
+          'Please report to the water bowl.';
+    }
+    return 'Bestie, the litter-ally bare minimum is not enough. '
+        'Time to check your rest, meals, movement, and self-care.';
+  }
+}
+
+class _ScoreCard extends StatelessWidget {
+  final String title;
+  final int score;
+  final Color color;
+  final Color background;
+  final String description;
+
+  const _ScoreCard({
+    required this.title,
+    required this.score,
+    required this.color,
+    required this.background,
+    required this.description,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: background, width: 1.5),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    color: Color(0xFF493D46),
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Text(
+                '$score%',
+                style: TextStyle(
+                  color: color,
+                  fontSize: 23,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: LinearProgressIndicator(
+              value: score / 100,
+              minHeight: 10,
+              backgroundColor: background,
+              valueColor: AlwaysStoppedAnimation<Color>(color),
             ),
           ),
-        );
-      },
+          const SizedBox(height: 12),
+          Text(
+            description,
+            style: const TextStyle(
+              color: Color(0xFF9B8E98),
+              fontSize: 13,
+              height: 1.5,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
