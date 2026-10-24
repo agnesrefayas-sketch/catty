@@ -38,7 +38,6 @@ class CattyApp extends StatelessWidget {
           elevation: 0,
           centerTitle: true,
         ),
-        fontFamily: 'Roboto',
       ),
       home: const HomeScreen(),
     );

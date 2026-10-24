@@ -74,6 +74,7 @@ class HomeScreen extends StatelessWidget {
                   'Purrfectly Okay?',
                   textAlign: TextAlign.center,
                   style: TextStyle(
+                    fontFamily: 'Nunito',
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
                     color: textColor,
