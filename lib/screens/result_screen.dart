@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 class ResultScreen extends StatelessWidget {
   final int catEnergy;
-  final int catWellness;
   final String catPersonality;
   final String catDescription;
   final VoidCallback onRetake;
@@ -11,7 +10,6 @@ class ResultScreen extends StatelessWidget {
   const ResultScreen({
     super.key,
     required this.catEnergy,
-    required this.catWellness,
     required this.catPersonality,
     required this.catDescription,
     required this.onRetake,
@@ -23,10 +21,45 @@ class ResultScreen extends StatelessWidget {
   static const Color mutedColor = Color(0xFF9B8E98);
   static const Color sageGreen = Color(0xFFA8BFA3);
 
+  IconData get personalityIcon {
+    final personality = catPersonality.toLowerCase();
+
+    if (personality.contains('princess')) {
+      return Icons.favorite_rounded;
+    } else if (personality.contains('orange')) {
+      return Icons.wb_sunny_rounded;
+    } else if (personality.contains('black')) {
+      return Icons.nightlight_round;
+    } else if (personality.contains('sleepy')) {
+      return Icons.bedtime_rounded;
+    } else if (personality.contains('curious')) {
+      return Icons.travel_explore_rounded;
+    }
+
+    return Icons.pets_rounded;
+  }
+
+  String get personalityTagline {
+    final personality = catPersonality.toLowerCase();
+
+    if (personality.contains('princess')) {
+      return 'Soft, sweet, and lovable.';
+    } else if (personality.contains('orange')) {
+      return 'A little chaotic, a lot of fun.';
+    } else if (personality.contains('black')) {
+      return 'Quiet, cool, and mysterious.';
+    } else if (personality.contains('sleepy')) {
+      return 'Cozy vibes and peaceful minds.';
+    } else if (personality.contains('curious')) {
+      return 'Always curious, always exploring.';
+    }
+
+    return 'Every cat has its own personality.';
+  }
+
   @override
   Widget build(BuildContext context) {
     final energy = catEnergy.clamp(0, 100);
-    final wellness = catWellness.clamp(0, 100);
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -61,9 +94,9 @@ class ResultScreen extends StatelessWidget {
                     width: 3,
                   ),
                 ),
-                child: const Center(
+                child: Center(
                   child: Icon(
-                    Icons.pets_rounded,
+                    personalityIcon,
                     color: primaryColor,
                     size: 78,
                   ),
@@ -84,9 +117,10 @@ class ResultScreen extends StatelessWidget {
 
               const SizedBox(height: 8),
 
-              const Text(
-                'No thoughts. Just meow.',
-                style: TextStyle(
+              Text(
+                personalityTagline,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
                   color: mutedColor,
                   fontSize: 15,
                   fontStyle: FontStyle.italic,
@@ -103,16 +137,6 @@ class ResultScreen extends StatelessWidget {
                 description: _energyDescription(energy),
               ),
 
-              const SizedBox(height: 16),
-
-              _ScoreCard(
-                title: 'Cat Wellness',
-                score: wellness,
-                color: sageGreen,
-                background: const Color(0xFFE4EBDD),
-                description: _wellnessDescription(wellness),
-              ),
-
               const SizedBox(height: 24),
 
               Container(
@@ -126,7 +150,7 @@ class ResultScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Your cat report',
+                      'So, What Kind of Cat Are You?',
                       style: TextStyle(
                         color: textColor,
                         fontSize: 18,
@@ -149,7 +173,7 @@ class ResultScreen extends StatelessWidget {
               const SizedBox(height: 12),
 
               const Text(
-                'For fun and self-reflection only, not a medical assessment.',
+                'For fun and self-reflection only.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: mutedColor,
@@ -193,36 +217,19 @@ class ResultScreen extends StatelessWidget {
 
   static String _energyDescription(int score) {
     if (score >= 85) {
-      return 'Your inner cat has escaped containment. '
-          'The brain cell is on vacation. Maximum meow energy.';
+      return 'Maximum meow energy! You are ready to '
+          'explore, play, and turn ordinary days into adventures.';
     }
     if (score >= 65) {
-      return 'Certified cat behavior detected. '
-          'You probably stare at walls for absolutely no reason.';
+      return 'Your inner cat is coming out! You have '
+          'plenty of playful energy and curious little habits.';
     }
     if (score >= 40) {
       return 'Part-time cat, full-time mystery. '
           'Your whiskers are still loading.';
     }
-    return 'A human disguise with suspiciously cat-like tendencies. '
-        'The cat council is keeping an eye on you.';
-  }
-
-  static String _wellnessDescription(int score) {
-    if (score >= 85) {
-      return 'Hydrated, rested, and thriving. '
-          'The neighborhood cats are asking for your secrets.';
-    }
-    if (score >= 65) {
-      return 'Not bad, little furball. '
-          'A few habits could use some paw-sitive changes.';
-    }
-    if (score >= 40) {
-      return 'The cat wellness department has opened a case. '
-          'Please report to the water bowl.';
-    }
-    return 'Bestie, the litter-ally bare minimum is not enough. '
-        'Time to check your rest, meals, movement, and self-care.';
+    return 'A quiet little kitty today. Take things '
+        'at your own pace and enjoy the little moments.';
   }
 }
 
@@ -255,7 +262,6 @@ class _ScoreCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
                 child: Text(

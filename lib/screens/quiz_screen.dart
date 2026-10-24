@@ -212,7 +212,6 @@ class QuizScreen extends StatelessWidget {
                                   MaterialPageRoute(
                                     builder: (_) => ResultScreen(
                                       catEnergy: result.percentage.round(),
-                                      catWellness: result.percentage.round(),
                                       catPersonality: result.title,
                                       catDescription: result.description,
                                       onRetake: () {

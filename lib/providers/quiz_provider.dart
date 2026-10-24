@@ -1,3 +1,4 @@
+
 import 'package:flutter/foundation.dart';
 
 import '../data/quiz_data.dart';
@@ -26,8 +27,7 @@ class QuizProvider extends ChangeNotifier {
   bool get hasAnsweredCurrentQuestion =>
       _answers.containsKey(currentQuestion.id);
 
-  int? get selectedAnswerIndex =>
-      _answers[currentQuestion.id];
+  int? get selectedAnswerIndex => _answers[currentQuestion.id];
 
   double get progress {
     if (totalQuestions == 0) return 0;
@@ -38,24 +38,45 @@ class QuizProvider extends ChangeNotifier {
 
   int get answeredQuestions => _answers.length;
 
-  // Calculate the score from all selected answers
+  // Calculate total Cat Energy
   int get totalScore {
     var score = 0;
 
     for (final question in QuizData.questions) {
       final selectedIndex = _answers[question.id];
 
-      if (selectedIndex != null &&
-          selectedIndex >= 0 &&
-          selectedIndex < question.scores.length) {
-        score += question.scores[selectedIndex];
+      if (selectedIndex != null) {
+        score += question.calculateEnergy(selectedIndex) ?? 0;
       }
     }
 
     return score;
   }
 
-  // Select an answer for the current question
+  // Calculate personality scores
+  Map<CatPersonality, int> get personalityScores {
+    final scores = {
+      for (final personality in CatPersonality.values)
+        personality: 0,
+    };
+
+    for (final question in QuizData.questions) {
+      final selectedIndex = _answers[question.id];
+
+      if (selectedIndex != null) {
+        final personality =
+        question.calculatePersonality(selectedIndex);
+
+        if (personality != null) {
+          scores[personality] = (scores[personality] ?? 0) + 1;
+        }
+      }
+    }
+
+    return scores;
+  }
+
+  // Select an answer
   void selectAnswer(int selectedIndex) {
     if (isCompleted) return;
 
@@ -68,7 +89,7 @@ class QuizProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Move to the next question or finish the quiz
+  // Move to next question or finish quiz
   void nextQuestion() {
     if (isCompleted || !hasAnsweredCurrentQuestion) return;
 
@@ -80,7 +101,7 @@ class QuizProvider extends ChangeNotifier {
     }
   }
 
-  // Return to the previous question
+  // Return to previous question
   void previousQuestion() {
     if (isCompleted || _currentQuestionIndex <= 0) return;
 
@@ -88,18 +109,25 @@ class QuizProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Create the final result
+  // Create final result
   void _finishQuiz() {
-    _result = QuizResult.fromScore(
+    final scores = personalityScores;
+
+    final winningPersonality = scores.entries.reduce(
+          (a, b) => a.value >= b.value ? a : b,
+    ).key;
+
+    _result = QuizResult.fromAnswers(
       totalScore: totalScore,
       minPossibleScore: QuizData.minimumPossibleScore,
       maxPossibleScore: QuizData.maximumPossibleScore,
+      personality: winningPersonality,
     );
 
     notifyListeners();
   }
 
-  // Restart the quiz from the beginning
+  // Restart quiz
   void resetQuiz() {
     _currentQuestionIndex = 0;
     _answers.clear();

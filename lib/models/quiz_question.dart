@@ -1,44 +1,63 @@
+
+enum CatPersonality {
+  princess,
+  orange,
+  black,
+  sleepy,
+  curious,
+}
+
 class QuizQuestion {
   final String id;
   final String question;
   final List<String> options;
-  final List<int> scores;
+  final List<CatPersonality> answerPersonalities;
+  final List<int> energyScores;
 
   const QuizQuestion({
     required this.id,
     required this.question,
     required this.options,
-    required this.scores,
+    required this.answerPersonalities,
+    required this.energyScores,
   });
 
   int get optionCount => options.length;
 
   int get maxScore {
-    if (scores.isEmpty) return 0;
-
-    return scores.reduce((a, b) => a > b ? a : b);
+    if (energyScores.isEmpty) return 0;
+    return energyScores.reduce((a, b) => a > b ? a : b);
   }
 
   int get minScore {
-    if (scores.isEmpty) return 0;
-
-    return scores.reduce((a, b) => a < b ? a : b);
+    if (energyScores.isEmpty) return 0;
+    return energyScores.reduce((a, b) => a < b ? a : b);
   }
 
   bool get isValid {
     return id.trim().isNotEmpty &&
         question.trim().isNotEmpty &&
         options.length >= 2 &&
-        options.length == scores.length &&
+        options.length == answerPersonalities.length &&
+        options.length == energyScores.length &&
         options.every((option) => option.trim().isNotEmpty) &&
-        scores.every((score) => score >= 0);
+        energyScores.every((score) => score >= 0);
   }
 
-  int? calculateScore(int selectedIndex) {
-    if (selectedIndex < 0 || selectedIndex >= scores.length) {
+  CatPersonality? calculatePersonality(int selectedIndex) {
+    if (selectedIndex < 0 ||
+        selectedIndex >= answerPersonalities.length) {
       return null;
     }
 
-    return scores[selectedIndex];
+    return answerPersonalities[selectedIndex];
+  }
+
+  int? calculateEnergy(int selectedIndex) {
+    if (selectedIndex < 0 || selectedIndex >= energyScores.length) {
+      return null;
+    }
+
+    return energyScores[selectedIndex];
   }
 }
