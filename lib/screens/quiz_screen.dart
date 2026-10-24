@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../providers/quiz_provider.dart';
 import '../widgets/answer_option_card.dart';
 import 'result_screen.dart';

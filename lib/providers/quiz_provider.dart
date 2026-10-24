@@ -1,6 +1,4 @@
-
 import 'package:flutter/foundation.dart';
-
 import '../data/quiz_data.dart';
 import '../models/quiz_question.dart';
 import '../models/quiz_result.dart';
@@ -111,11 +109,37 @@ class QuizProvider extends ChangeNotifier {
 
   // Create final result
   void _finishQuiz() {
-    final scores = personalityScores;
+    if (answeredQuestions != totalQuestions) return;
 
-    final winningPersonality = scores.entries.reduce(
-          (a, b) => a.value >= b.value ? a : b,
-    ).key;
+    final scores = personalityScores;
+    final highestScore = scores.values.reduce(
+          (a, b) => a > b ? a : b,
+    );
+
+    final tiedPersonalities = scores.entries
+        .where((entry) => entry.value == highestScore)
+        .map((entry) => entry.key)
+        .toSet();
+
+    // Use the latest answer to break a tie
+    CatPersonality? winningPersonality;
+
+    for (final question in QuizData.questions.reversed) {
+      final selectedIndex = _answers[question.id];
+
+      if (selectedIndex != null) {
+        final personality =
+        question.calculatePersonality(selectedIndex);
+
+        if (personality != null &&
+            tiedPersonalities.contains(personality)) {
+          winningPersonality = personality;
+          break;
+        }
+      }
+    }
+
+    winningPersonality ??= tiedPersonalities.first;
 
     _result = QuizResult.fromAnswers(
       totalScore: totalScore,
@@ -132,7 +156,6 @@ class QuizProvider extends ChangeNotifier {
     _currentQuestionIndex = 0;
     _answers.clear();
     _result = null;
-
     notifyListeners();
   }
 }

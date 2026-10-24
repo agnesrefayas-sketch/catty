@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class ResultScreen extends StatelessWidget {
@@ -20,6 +19,24 @@ class ResultScreen extends StatelessWidget {
   static const Color textColor = Color(0xFF493D46);
   static const Color mutedColor = Color(0xFF9B8E98);
   static const Color sageGreen = Color(0xFFA8BFA3);
+
+  String get catGif {
+    final personality = catPersonality.toLowerCase();
+
+    if (personality.contains('princess')) {
+      return 'assets/images/cat_princess.gif';
+    } else if (personality.contains('orange')) {
+      return 'assets/images/cat_orange.gif';
+    } else if (personality.contains('black')) {
+      return 'assets/images/cat_black.gif';
+    } else if (personality.contains('sleepy')) {
+      return 'assets/images/cat_sleepy.gif';
+    } else if (personality.contains('curious')) {
+      return 'assets/images/cat_curious.gif';
+    }
+
+    return 'assets/images/cat_curious.gif';
+  }
 
   IconData get personalityIcon {
     final personality = catPersonality.toLowerCase();
@@ -83,22 +100,33 @@ class ResultScreen extends StatelessWidget {
 
               const SizedBox(height: 24),
 
+              // Animated GIF based on cat personality
               Container(
-                width: 160,
-                height: 160,
+                width: 220,
+                height: 220,
                 decoration: BoxDecoration(
                   color: const Color(0xFFFFE8ED),
-                  shape: BoxShape.circle,
+                  borderRadius: BorderRadius.circular(24),
                   border: Border.all(
                     color: const Color(0xFFF9D5DE),
                     width: 3,
                   ),
                 ),
-                child: Center(
-                  child: Icon(
-                    personalityIcon,
-                    color: primaryColor,
-                    size: 78,
+                padding: const EdgeInsets.all(10),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Image.asset(
+                    catGif,
+                    width: double.infinity,
+                    height: double.infinity,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Icon(
+                        personalityIcon,
+                        color: primaryColor,
+                        size: 78,
+                      );
+                    },
                   ),
                 ),
               ),
@@ -220,14 +248,17 @@ class ResultScreen extends StatelessWidget {
       return 'Maximum meow energy! You are ready to '
           'explore, play, and turn ordinary days into adventures.';
     }
+
     if (score >= 65) {
       return 'Your inner cat is coming out! You have '
           'plenty of playful energy and curious little habits.';
     }
+
     if (score >= 40) {
       return 'Part-time cat, full-time mystery. '
           'Your whiskers are still loading.';
     }
+
     return 'A quiet little kitty today. Take things '
         'at your own pace and enjoy the little moments.';
   }
@@ -267,7 +298,7 @@ class _ScoreCard extends StatelessWidget {
                 child: Text(
                   title,
                   style: const TextStyle(
-                    color: Color(0xFF493D46),
+                    color: ResultScreen.textColor,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
@@ -297,7 +328,7 @@ class _ScoreCard extends StatelessWidget {
           Text(
             description,
             style: const TextStyle(
-              color: Color(0xFF9B8E98),
+              color: ResultScreen.mutedColor,
               fontSize: 13,
               height: 1.5,
             ),

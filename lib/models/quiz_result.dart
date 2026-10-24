@@ -1,4 +1,3 @@
-
 import 'quiz_question.dart';
 
 class QuizResult {

@@ -1,4 +1,3 @@
-
 enum CatPersonality {
   princess,
   orange,

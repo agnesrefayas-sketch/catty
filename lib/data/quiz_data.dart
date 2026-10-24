@@ -1,4 +1,3 @@
-
 import '../models/quiz_question.dart';
 
 class QuizData {
@@ -28,13 +27,13 @@ class QuizData {
       options: [
         'Right on their lap. I deserve attention.',
         'Somewhere completely unexpected!',
-        'Nearby, but not too close.',
+        'Find the coziest place and take a nap.',
         'On the highest spot so I can watch everything.',
       ],
       answerPersonalities: [
         CatPersonality.princess,
         CatPersonality.orange,
-        CatPersonality.black,
+        CatPersonality.sleepy,
         CatPersonality.curious,
       ],
       energyScores: [2, 4, 1, 3],
@@ -45,13 +44,13 @@ class QuizData {
       options: [
         'Play with it dramatically until everyone watches me.',
         'Attack it immediately! No thoughts, just paws.',
-        'Inspect it quietly from a distance.',
+        'Take a little rest before deciding to play.',
         'Investigate every little detail.',
       ],
       answerPersonalities: [
         CatPersonality.princess,
         CatPersonality.orange,
-        CatPersonality.black,
+        CatPersonality.sleepy,
         CatPersonality.curious,
       ],
       energyScores: [3, 4, 1, 3],
@@ -79,13 +78,13 @@ class QuizData {
       options: [
         'Meow politely until my human notices.',
         'Knock something over to get attention.',
-        'Wait quietly for the right moment.',
+        'Wait quietly and save my energy.',
         'Investigate the kitchen for possible snacks.',
       ],
       answerPersonalities: [
         CatPersonality.princess,
         CatPersonality.orange,
-        CatPersonality.black,
+        CatPersonality.sleepy,
         CatPersonality.curious,
       ],
       energyScores: [2, 4, 1, 3],
@@ -97,7 +96,7 @@ class QuizData {
         'On a soft pillow fit for royalty.',
         'Inside a random box that is too small.',
         'In a dark, quiet corner all by myself.',
-        'Somewhere new where I can observe everything.',
+        'Somewhere warm where I can sleep peacefully.',
       ],
       answerPersonalities: [
         CatPersonality.princess,
@@ -130,13 +129,13 @@ class QuizData {
       options: [
         'Come over because I love being adored.',
         'Run toward them at full speed!',
-        'Pretend I did not hear anything.',
+        'Stretch, yawn, and slowly get comfortable.',
         'Look around to figure out why they called me.',
       ],
       answerPersonalities: [
         CatPersonality.princess,
         CatPersonality.orange,
-        CatPersonality.black,
+        CatPersonality.sleepy,
         CatPersonality.curious,
       ],
       energyScores: [2, 4, 1, 3],
@@ -148,7 +147,7 @@ class QuizData {
         'Meow until someone opens it for me.',
         'Scratch it dramatically and demand entry.',
         'Sit quietly and wait for the perfect moment.',
-        'Investigate every corner around the door.',
+        'Explore the area and search for clues.',
       ],
       answerPersonalities: [
         CatPersonality.princess,
@@ -164,13 +163,13 @@ class QuizData {
       options: [
         'Demand cuddles and all their attention.',
         'Playfully bite their hand and run away.',
-        'Sit beside them quietly.',
+        'Curl up beside them and enjoy a peaceful nap.',
         'Follow them everywhere to see what they are doing.',
       ],
       answerPersonalities: [
         CatPersonality.princess,
         CatPersonality.orange,
-        CatPersonality.black,
+        CatPersonality.sleepy,
         CatPersonality.curious,
       ],
       energyScores: [2, 4, 1, 3],
@@ -279,9 +278,7 @@ class QuizData {
   static int get maxPossibleScore => maximumPossibleScore;
 
   static bool get areQuestionsValid {
-    if (questions.length != 15) {
-      return false;
-    }
+    if (questions.length != 15) return false;
 
     final ids = questions.map((question) => question.id).toSet();
 
