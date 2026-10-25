@@ -130,8 +130,8 @@ class ResultScreen extends StatelessWidget {
               // Personalized result heading
               Text(
                 userName.isEmpty
-                    ? "You're a $catPersonality!"
-                    : "$userName, you're a $catPersonality!",
+                    ? "You're $catPersonality!"
+                    : "$userName, you're $catPersonality!",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontFamily: 'Nunito',
