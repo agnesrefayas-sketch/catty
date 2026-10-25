@@ -1,4 +1,4 @@
-# Catty: Find Your Cat Personality
+# Catty: Purrfectly Okay?
 
 ## 1. Identitas Mahasiswa
 
@@ -9,7 +9,7 @@
 ## 2. Informasi Aplikasi
 
 ### Nama Aplikasi
-**Catty: Find Your Cat Personality**
+**Catty: Purrfectly Okay?**
 
 ### Deskripsi Aplikasi
 Catty adalah aplikasi kuis interaktif berbasis Flutter yang dirancang untuk mengetahui kepribadian kucing yang paling sesuai dengan pengguna berdasarkan jawaban dari serangkaian pertanyaan. Aplikasi ini memiliki tampilan yang minimalis dengan perpaduan warna pastel pink dan sage green, serta mendukung mode terang dan mode gelap.
@@ -30,8 +30,6 @@ Catty adalah aplikasi kuis interaktif berbasis Flutter yang dirancang untuk meng
 
 #### 1. Cat Personality GIFs
 
-The following GIFs are used to represent each cat personality in the application.
-
 - **Black Cat:** [Tenor – Shake My Hand](https://tenor.com/view/shake-my-hand-shake-hand-shake-hands-ai-cat-clapping-hands-gif-15036103406822974936)
 - **Curious Cat:** [Tenor – Issue Cat](https://tenor.com/view/issue-cat-waltuh-memes-gif-4271048792259434983)
 - **Princess Cat:** [Tenor – Marie Sassy](https://tenor.com/view/marie-sassy-aristocats-cat-gif-10231732)
@@ -45,6 +43,8 @@ The following GIFs are used to represent each cat personality in the application
 #### 3. Fonts
 
 - **Changa One:** [Google Fonts](https://fonts.google.com/specimen/Changa+One?preview.script=Latn)
+
+### B. Screenshots
 
 ### 1. Home Screen
 
@@ -72,7 +72,7 @@ The following GIFs are used to represent each cat personality in the application
 
 ### C. Mockup/Prototype Aplikasi
 
-- **Link Figma/Prototype:** [Masukkan link mockup atau prototype aplikasi]
+- **Figma Make Prototype:** [Catty – Find Your Cat Personality](https://www.figma.com/make/W8xOs5c5sHsUOkwpMppX6B/Review-Attached-Content?t=HNPUYp7u4yIZpHgw-20&fullscreen=1)
 
 ## 4. Teknologi yang Digunakan
 
