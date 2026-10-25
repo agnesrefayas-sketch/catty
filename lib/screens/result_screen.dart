@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/quiz_provider.dart';
 
 class ResultScreen extends StatelessWidget {
   final int catEnergy;
@@ -77,6 +79,7 @@ class ResultScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final energy = catEnergy.clamp(0, 100);
+    final userName = context.watch<QuizProvider>().userName;
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -87,14 +90,14 @@ class ResultScreen extends StatelessWidget {
             children: [
               const SizedBox(height: 16),
 
-              const Text(
-                'THE CAT COUNCIL HAS DECIDED',
+              Text(
+                "$userName, you're a $catPersonality!",
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: primaryColor,
-                  fontSize: 12,
+                style: const TextStyle(
+                  fontFamily: 'Nunito',
+                  fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  letterSpacing: 1.4,
+                  color: Color(0xFF493D46),
                 ),
               ),
 

@@ -1,4 +1,6 @@
+
 import 'package:flutter/foundation.dart';
+
 import '../data/quiz_data.dart';
 import '../models/quiz_question.dart';
 import '../models/quiz_result.dart';
@@ -7,6 +9,16 @@ class QuizProvider extends ChangeNotifier {
   int _currentQuestionIndex = 0;
   final Map<String, int> _answers = {};
   QuizResult? _result;
+
+  // User name
+  String _userName = '';
+
+  String get userName => _userName;
+
+  void setUserName(String name) {
+    _userName = name.trim();
+    notifyListeners();
+  }
 
   // Current quiz state
   int get currentQuestionIndex => _currentQuestionIndex;
@@ -54,8 +66,7 @@ class QuizProvider extends ChangeNotifier {
   // Calculate personality scores
   Map<CatPersonality, int> get personalityScores {
     final scores = {
-      for (final personality in CatPersonality.values)
-        personality: 0,
+      for (final personality in CatPersonality.values) personality: 0,
     };
 
     for (final question in QuizData.questions) {
@@ -112,6 +123,7 @@ class QuizProvider extends ChangeNotifier {
     if (answeredQuestions != totalQuestions) return;
 
     final scores = personalityScores;
+
     final highestScore = scores.values.reduce(
           (a, b) => a > b ? a : b,
     );
@@ -156,6 +168,7 @@ class QuizProvider extends ChangeNotifier {
     _currentQuestionIndex = 0;
     _answers.clear();
     _result = null;
+
     notifyListeners();
   }
 }
