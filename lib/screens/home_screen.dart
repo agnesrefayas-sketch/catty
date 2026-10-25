@@ -1,10 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/quiz_provider.dart';
-import 'quiz_screen.dart';
 import '../widgets/name_input_card.dart';
+import 'quiz_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,13 +13,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final TextEditingController _nameController = TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController =
+  TextEditingController();
 
-  static const Color backgroundColor = Color(0xFFFFF8F5);
+  final GlobalKey<FormState> _formKey =
+  GlobalKey<FormState>();
+
   static const Color primaryColor = Color(0xFFFF8FA3);
-  static const Color textColor = Color(0xFF493D46);
-  static const Color mutedColor = Color(0xFF9B8E98);
   static const Color sageGreen = Color(0xFFA8BFA3);
 
   @override
@@ -32,10 +31,9 @@ class _HomeScreenState extends State<HomeScreen> {
   void _startQuiz() {
     if (!_formKey.currentState!.validate()) return;
 
-    final name = _nameController.text.trim();
-
     final quiz = context.read<QuizProvider>();
-    quiz.setUserName(name);
+
+    quiz.setUserName(_nameController.text.trim());
     quiz.resetQuiz();
 
     Navigator.of(context).push(
@@ -47,6 +45,24 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.watch<QuizProvider>().isDarkMode;
+
+    final backgroundColor = isDark
+        ? const Color(0xFF17151B)
+        : const Color(0xFFFFF8F5);
+
+    final textColor = isDark
+        ? const Color(0xFFF7F0F5)
+        : const Color(0xFF493D46);
+
+    final mutedColor = isDark
+        ? const Color(0xFFB9AEBB)
+        : const Color(0xFF9B8E98);
+
+    final infoCardColor = isDark
+        ? const Color(0xFF29332D)
+        : const Color(0xFFEAF0E7);
+
     return Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(
@@ -63,16 +79,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    // Logo and theme toggle
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(
+                      children: [
+                        const Icon(
                           Icons.pets_rounded,
                           color: primaryColor,
                           size: 28,
                         ),
-                        SizedBox(width: 8),
-                        Text(
+                        const SizedBox(width: 8),
+                        const Text(
                           'catty',
                           style: TextStyle(
                             fontSize: 30,
@@ -81,11 +98,29 @@ class _HomeScreenState extends State<HomeScreen> {
                             color: primaryColor,
                           ),
                         ),
+                        const SizedBox(width: 8),
+                        IconButton(
+                          tooltip: isDark
+                              ? 'Switch to light mode'
+                              : 'Switch to dark mode',
+                          onPressed: () {
+                            context
+                                .read<QuizProvider>()
+                                .toggleTheme();
+                          },
+                          icon: Icon(
+                            isDark
+                                ? Icons.light_mode_rounded
+                                : Icons.dark_mode_rounded,
+                            color: primaryColor,
+                          ),
+                        ),
                       ],
                     ),
 
                     const SizedBox(height: 30),
 
+                    // Cat image
                     Container(
                       width: 180,
                       height: 180,
@@ -110,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     const SizedBox(height: 28),
 
-                    const Text(
+                    Text(
                       'Purrfectly Okay?',
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -124,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     const SizedBox(height: 12),
 
-                    const Text(
+                    Text(
                       'Discover your inner cat.',
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -136,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     const SizedBox(height: 10),
 
-                    const Text(
+                    Text(
                       'Are you a sleepy little loaf, a chaotic zoomie '
                           'machine, or a perfectly balanced cat?',
                       textAlign: TextAlign.center,
@@ -149,7 +184,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     const SizedBox(height: 24),
 
-                    const Align(
+                    Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         "First, what's your name?",
@@ -167,7 +202,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     NameInputCard(
                       controller: _nameController,
                       validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
+                        if (value == null ||
+                            value.trim().isEmpty) {
                           return 'Please enter your name first.';
                         }
                         return null;
@@ -176,23 +212,24 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     const SizedBox(height: 22),
 
+                    // Information card
                     Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 18,
                         vertical: 14,
                       ),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFEAF0E7),
+                        color: infoCardColor,
                         borderRadius: BorderRadius.circular(18),
                       ),
-                      child: const Row(
+                      child: Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.spa_rounded,
                             color: sageGreen,
                             size: 24,
                           ),
-                          SizedBox(width: 12),
+                          const SizedBox(width: 12),
                           Expanded(
                             child: Text(
                               'Take the quiz to discover your cat '
@@ -210,6 +247,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     const SizedBox(height: 24),
 
+                    // Start quiz button
                     SizedBox(
                       width: double.infinity,
                       height: 56,
@@ -242,7 +280,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     const SizedBox(height: 18),
 
-                    const Text(
+                    Text(
                       'Every cat has its own kind of purrfection.',
                       textAlign: TextAlign.center,
                       style: TextStyle(

@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 
 import '../data/quiz_data.dart';
@@ -163,12 +162,21 @@ class QuizProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Theme mode
+  bool _isDarkMode = false;
+
+  bool get isDarkMode => _isDarkMode;
+
+  void toggleTheme() {
+    _isDarkMode = !_isDarkMode;
+    notifyListeners();
+  }
+
   // Restart quiz
   void resetQuiz() {
     _currentQuestionIndex = 0;
     _answers.clear();
     _result = null;
-
     notifyListeners();
   }
 }

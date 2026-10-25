@@ -1,5 +1,7 @@
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../providers/quiz_provider.dart';
 
 class ResultScreen extends StatelessWidget {
@@ -16,10 +18,7 @@ class ResultScreen extends StatelessWidget {
     required this.onRetake,
   });
 
-  static const Color backgroundColor = Color(0xFFFFF8F5);
   static const Color primaryColor = Color(0xFFE987A5);
-  static const Color textColor = Color(0xFF493D46);
-  static const Color mutedColor = Color(0xFF9B8E98);
   static const Color sageGreen = Color(0xFFA8BFA3);
 
   String get catGif {
@@ -78,8 +77,46 @@ class ResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final quiz = context.watch<QuizProvider>();
+    final isDark = quiz.isDarkMode;
     final energy = catEnergy.clamp(0, 100);
-    final userName = context.watch<QuizProvider>().userName;
+    final userName = quiz.userName;
+
+    final backgroundColor = isDark
+        ? const Color(0xFF17151B)
+        : const Color(0xFFFFF8F5);
+
+    final cardColor = isDark
+        ? const Color(0xFF292530)
+        : Colors.white;
+
+    final textColor = isDark
+        ? const Color(0xFFF7F0F5)
+        : const Color(0xFF493D46);
+
+    final mutedColor = isDark
+        ? const Color(0xFFB9AEBB)
+        : const Color(0xFF9B8E98);
+
+    final imageBackground = isDark
+        ? const Color(0xFF3A2934)
+        : const Color(0xFFFFE8ED);
+
+    final imageBorder = isDark
+        ? const Color(0xFF674451)
+        : const Color(0xFFF9D5DE);
+
+    final scoreBackground = isDark
+        ? const Color(0xFF44313D)
+        : const Color(0xFFF5DDE3);
+
+    final descriptionBackground = isDark
+        ? const Color(0xFF29332D)
+        : const Color(0xFFEAF0E6);
+
+    final borderColor = isDark
+        ? const Color(0xFF443B49)
+        : const Color(0xFFF5E5E8);
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -90,14 +127,17 @@ class ResultScreen extends StatelessWidget {
             children: [
               const SizedBox(height: 16),
 
+              // Personalized result heading
               Text(
-                "$userName, you're a $catPersonality!",
+                userName.isEmpty
+                    ? "You're a $catPersonality!"
+                    : "$userName, you're a $catPersonality!",
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Nunito',
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF493D46),
+                  color: textColor,
                 ),
               ),
 
@@ -107,15 +147,15 @@ class ResultScreen extends StatelessWidget {
               Container(
                 width: 220,
                 height: 220,
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFFE8ED),
+                  color: imageBackground,
                   borderRadius: BorderRadius.circular(24),
                   border: Border.all(
-                    color: const Color(0xFFF9D5DE),
+                    color: imageBorder,
                     width: 3,
                   ),
                 ),
-                padding: const EdgeInsets.all(10),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
                   child: Image.asset(
@@ -139,7 +179,7 @@ class ResultScreen extends StatelessWidget {
               Text(
                 catPersonality,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   color: textColor,
                   fontSize: 27,
                   fontWeight: FontWeight.bold,
@@ -151,7 +191,7 @@ class ResultScreen extends StatelessWidget {
               Text(
                 personalityTagline,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   color: mutedColor,
                   fontSize: 15,
                   fontStyle: FontStyle.italic,
@@ -160,27 +200,33 @@ class ResultScreen extends StatelessWidget {
 
               const SizedBox(height: 32),
 
+              // Cat energy score
               _ScoreCard(
                 title: 'Cat Energy',
                 score: energy,
                 color: primaryColor,
-                background: const Color(0xFFF5DDE3),
+                background: scoreBackground,
+                cardColor: cardColor,
+                borderColor: borderColor,
+                textColor: textColor,
+                mutedColor: mutedColor,
                 description: _energyDescription(energy),
               ),
 
               const SizedBox(height: 24),
 
+              // Personality description
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEAF0E6),
+                  color: descriptionBackground,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'So, What Kind of Cat Are You?',
                       style: TextStyle(
                         color: textColor,
@@ -191,7 +237,7 @@ class ResultScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     Text(
                       catDescription,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: textColor,
                         fontSize: 14,
                         height: 1.6,
@@ -203,7 +249,7 @@ class ResultScreen extends StatelessWidget {
 
               const SizedBox(height: 12),
 
-              const Text(
+              Text(
                 'For fun and self-reflection only.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -214,6 +260,7 @@ class ResultScreen extends StatelessWidget {
 
               const SizedBox(height: 24),
 
+              // Retake quiz button
               SizedBox(
                 width: double.infinity,
                 height: 54,
@@ -272,6 +319,10 @@ class _ScoreCard extends StatelessWidget {
   final int score;
   final Color color;
   final Color background;
+  final Color cardColor;
+  final Color borderColor;
+  final Color textColor;
+  final Color mutedColor;
   final String description;
 
   const _ScoreCard({
@@ -279,6 +330,10 @@ class _ScoreCard extends StatelessWidget {
     required this.score,
     required this.color,
     required this.background,
+    required this.cardColor,
+    required this.borderColor,
+    required this.textColor,
+    required this.mutedColor,
     required this.description,
   });
 
@@ -288,9 +343,12 @@ class _ScoreCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cardColor,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: background, width: 1.5),
+        border: Border.all(
+          color: borderColor,
+          width: 1.5,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -300,8 +358,8 @@ class _ScoreCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   title,
-                  style: const TextStyle(
-                    color: ResultScreen.textColor,
+                  style: TextStyle(
+                    color: textColor,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
@@ -317,7 +375,9 @@ class _ScoreCard extends StatelessWidget {
               ),
             ],
           ),
+
           const SizedBox(height: 14),
+
           ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: LinearProgressIndicator(
@@ -327,11 +387,13 @@ class _ScoreCard extends StatelessWidget {
               valueColor: AlwaysStoppedAnimation<Color>(color),
             ),
           ),
+
           const SizedBox(height: 12),
+
           Text(
             description,
-            style: const TextStyle(
-              color: ResultScreen.mutedColor,
+            style: TextStyle(
+              color: mutedColor,
               fontSize: 13,
               height: 1.5,
             ),

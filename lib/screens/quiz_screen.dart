@@ -1,5 +1,7 @@
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../providers/quiz_provider.dart';
 import '../widgets/answer_option_card.dart';
 import 'result_screen.dart';
@@ -7,19 +9,45 @@ import 'result_screen.dart';
 class QuizScreen extends StatelessWidget {
   const QuizScreen({super.key});
 
-  static const Color backgroundColor = Color(0xFFFFF8F5);
   static const Color primaryColor = Color(0xFFFF8FA3);
-  static const Color textColor = Color(0xFF493D46);
-  static const Color mutedColor = Color(0xFF9B8E98);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Consumer<QuizProvider>(
           builder: (context, quiz, child) {
             final question = quiz.currentQuestion;
+            final isDark = quiz.isDarkMode;
+
+            final textColor = isDark
+                ? const Color(0xFFF7F0F5)
+                : const Color(0xFF493D46);
+
+            final mutedColor = isDark
+                ? const Color(0xFFB9AEBB)
+                : const Color(0xFF9B8E98);
+
+            final cardColor = isDark
+                ? const Color(0xFF292530)
+                : Colors.white;
+
+            final borderColor = isDark
+                ? const Color(0xFF443B49)
+                : const Color(0xFFF5E5E8);
+
+            final progressBackground = isDark
+                ? const Color(0xFF443B49)
+                : const Color(0xFFF3E4E8);
+
+            final buttonBorderColor = isDark
+                ? const Color(0xFF514653)
+                : const Color(0xFFF0DDE3);
+
+            final disabledButtonColor = isDark
+                ? const Color(0xFF39313D)
+                : const Color(0xFFF0DDE3);
 
             return Padding(
               padding: const EdgeInsets.symmetric(
@@ -66,7 +94,7 @@ class QuizScreen extends StatelessWidget {
                     children: [
                       Text(
                         'QUESTION ${quiz.currentQuestionIndex + 1}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 1.5,
@@ -75,7 +103,7 @@ class QuizScreen extends StatelessWidget {
                       ),
                       Text(
                         '${quiz.currentQuestionIndex + 1} of ${quiz.totalQuestions}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 13,
                           color: mutedColor,
                         ),
@@ -91,7 +119,7 @@ class QuizScreen extends StatelessWidget {
                     child: LinearProgressIndicator(
                       value: quiz.progress,
                       minHeight: 8,
-                      backgroundColor: const Color(0xFFF3E4E8),
+                      backgroundColor: progressBackground,
                       valueColor:
                       const AlwaysStoppedAnimation<Color>(
                         primaryColor,
@@ -106,17 +134,15 @@ class QuizScreen extends StatelessWidget {
                     width: double.infinity,
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: cardColor,
                       borderRadius: BorderRadius.circular(28),
-                      border: Border.all(
-                        color: const Color(0xFFF5E5E8),
-                      ),
+                      border: Border.all(color: borderColor),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          'Lets get this meow-ving!',
+                          "Let's get this meow-ving!",
                           style: TextStyle(
                             color: primaryColor,
                             fontSize: 13,
@@ -126,7 +152,7 @@ class QuizScreen extends StatelessWidget {
                         const SizedBox(height: 16),
                         Text(
                           question.question,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 23,
                             height: 1.4,
                             fontWeight: FontWeight.bold,
@@ -139,7 +165,7 @@ class QuizScreen extends StatelessWidget {
 
                   const SizedBox(height: 28),
 
-                  const Text(
+                  Text(
                     'Trust your whiskers. Choose wisely.',
                     style: TextStyle(
                       fontSize: 14,
@@ -149,7 +175,7 @@ class QuizScreen extends StatelessWidget {
 
                   const SizedBox(height: 14),
 
-                  // Reusable answer option cards
+                  // Answer options
                   Expanded(
                     child: ListView.separated(
                       itemCount: question.options.length,
@@ -182,8 +208,8 @@ class QuizScreen extends StatelessWidget {
                           style: OutlinedButton.styleFrom(
                             minimumSize: const Size(0, 54),
                             foregroundColor: textColor,
-                            side: const BorderSide(
-                              color: Color(0xFFF0DDE3),
+                            side: BorderSide(
+                              color: buttonBorderColor,
                             ),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18),
@@ -210,9 +236,11 @@ class QuizScreen extends StatelessWidget {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (_) => ResultScreen(
-                                      catEnergy: result.percentage.round(),
+                                      catEnergy:
+                                      result.percentage.round(),
                                       catPersonality: result.title,
-                                      catDescription: result.description,
+                                      catDescription:
+                                      result.description,
                                       onRetake: () {
                                         quiz.resetQuiz();
                                         Navigator.of(context).pop();
@@ -231,7 +259,7 @@ class QuizScreen extends StatelessWidget {
                             backgroundColor: primaryColor,
                             foregroundColor: Colors.white,
                             disabledBackgroundColor:
-                            const Color(0xFFF0DDE3),
+                            disabledButtonColor,
                             disabledForegroundColor: mutedColor,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
