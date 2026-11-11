@@ -1,6 +1,6 @@
 # Catty: Purrfectly Okay?
 
-## 1. Identitas Mahasiswa
+## 1. Identitas Saya
 
 - **Nama:** Agnes Refaya Agustine Silalahi
 - **NIM:** 241401125
